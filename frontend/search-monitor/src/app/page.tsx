@@ -16,6 +16,12 @@ export default function Home() {
     console.log(response)
   }
 
+  const getGuardian = async () => {
+    const response = await  axios.get('http://localhost:5000/guardian')
+
+    console.log(response)
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
@@ -26,7 +32,7 @@ export default function Home() {
           </LinkBorder>
           <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/financial-reporting/index.html' logo='test' onClick={getPublisher}>  
           </LinkBorder>
-          <LinkBorder link='https://www.theguardian.com/books' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://www.theguardian.com/books' logo='test' onClick={getGuardian}>  
           </LinkBorder>
           <LinkBorder link='https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
           </LinkBorder>

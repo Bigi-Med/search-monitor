@@ -74,6 +74,17 @@ def publisher():
     
     return data
 
+@app.route('/guardian')
+def guardian():
+    spider_name="SearchGuardian"
+    output_file_path = os.path.join(scrapy_project_path, 'resultGuardian.json')
+    subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultGuardian.json"], stderr=subprocess.STDOUT)
+
+    with open(output_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+    
+    return data
+
 
 if __name__ == '__main__': 
     app.run(host='0.0.0.0') 
