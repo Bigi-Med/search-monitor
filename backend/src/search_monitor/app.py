@@ -4,8 +4,10 @@ from flask_mail import Mail, Message
 import subprocess
 import os
 import json
+from flask_cors import CORS  # Import CORS from flask_cors
 
 app = Flask(__name__) 
+CORS(app)
 mail = Mail(app) # instantiate the mail class 
 
 # configuration of mail 
@@ -18,11 +20,11 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app) 
 
 scrapy_project_path = os.path.join(os.path.dirname(__file__))
-output_file_path = os.path.join(scrapy_project_path, 'changes.json')
 
 # message object mapped to a particular URL ‘/’ 
 @app.route("/") 
 def index():
+    output_file_path = os.path.join(scrapy_project_path, 'changes.json')
     changed=[]
     changed_urls=""
     print(output_file_path)
@@ -60,6 +62,18 @@ def index():
     mail.send(msg)
 
     return 'sent'
+
+@app.route('/publisher')
+def publisher():
+    spider_name="SearchPbw"
+    output_file_path = os.path.join(scrapy_project_path, 'resultPbw.json')
+    subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultPbw.json"], stderr=subprocess.STDOUT)
+
+    with open(output_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+    
+    return data
+
 
 if __name__ == '__main__': 
     app.run(host='0.0.0.0') 

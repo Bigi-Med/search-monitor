@@ -1,95 +1,55 @@
+'use client'
 import Image from 'next/image'
 import styles from './page.module.css'
+import LinkBorder from './components/LinkBorder'
+import axios from 'axios'
 
 export default function Home() {
+
+  const getAuthGuild = () => {
+    console.log("https://authorsguild.org/news/?sort=date-DESC")
+  }
+
+  const getPublisher = async () => {
+    const response = await  axios.get('http://localhost:5000/publisher')
+
+    console.log(response)
+  }
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+      <div className={styles.container}>
+        <div className={styles.leftContainer}>
+          <LinkBorder link='https://authorsguild.org/news/?sort=date-DESC' logo='test' onClick={getAuthGuild}>
+            </LinkBorder> 
+          <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/index.html' logo='test' onClick={getPublisher}>
+          </LinkBorder>
+          <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/financial-reporting/index.html' logo='test' onClick={getPublisher}>  
+          </LinkBorder>
+          <LinkBorder link='https://www.theguardian.com/books' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=kindle direct publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+        
+        </div>
+        <div className={styles.rightContainer}>
+          <LinkBorder link='https://news.google.com/search?q=self publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=ai book lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=ai writing lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=ai created book&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          </LinkBorder>
+          <LinkBorder link='https://news.google.com/search?q=author&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>
+          </LinkBorder>
+
+        
         </div>
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
   )
 }
