@@ -20,3 +20,57 @@
 .rightContainer{
   float: right;
 }
+
+.popup {
+  background-color: white;
+  padding: 20px;
+  color: blue;
+  z-index: 9;
+  position: fixed; /* Use position: fixed to position it relative to the viewport */
+  top: 50%; /* Vertically center */
+  left: 50%; /* Horizontally center */
+  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+  max-height: 90vh; /* Set a maximum height to limit the scrollable area */
+  overflow: auto; /* Apply overflow: auto to the entire popup */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow for depth */
+  backdrop-filter: blur(50px); /* Apply backdrop filter for background blur */
+  border: 1px solid rgba(0, 0, 0, 0.2); /* Add a border for separation */
+}
+
+.linkKeywords{
+  border-color:black;
+  border-width: 2px;
+  border-style: solid;
+  margin-bottom: 1%;
+  padding-bottom:2%;
+  padding-left:1%;
+}
+
+
+.loadingDiv{
+  background-color: white;
+  padding: 20px;
+  color: blue;
+  z-index: 9;
+  position: fixed; /* Use position: fixed to position it relative to the viewport */
+  top: 50%; /* Vertically center */
+  left: 50%; /* Horizontally center */
+  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow for depth */
+  backdrop-filter: blur(50px); /* Apply backdrop filter for background blur */
+  border: 1px solid rgba(0, 0, 0, 0.2); /* Add a border for separation */
+}
+
+.loadingIcon {
+  animation: spin 1s infinite linear;
+}
+  
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

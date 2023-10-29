@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from 'react'
 import { useState } from 'react'
 import styles from './LinkBorder.module.css'
+import Popup from 'reactjs-popup'
 
 interface LinkBorderProps {
-    link: string;
-    logo: string;
+    link?: string;
+    logo?: string;
     children?: React.ReactNode;
-    onClick: () => void
+    onClick?: () => void
 }
 
 const LinkBorder: FunctionComponent<LinkBorderProps> = ({link, logo, children,onClick}) => {

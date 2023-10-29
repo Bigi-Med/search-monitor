@@ -3,17 +3,51 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import LinkBorder from './components/LinkBorder'
 import axios from 'axios'
+import {useState} from 'react'
 
 export default function Home() {
+  const [showPopup, setShowPopup] = useState<Boolean>(false);
+  const [keywords, setKeywords] = useState<Array<String>>([''])
+  const [links, setLinks] = useState<Array<String>>([''])
+  const [Loading, setLoading] = useState<Boolean>(false)
 
+
+
+  const closePopUp = () => {
+    setShowPopup(false)
+  }
+
+  const parseResponse = (response:any) => {
+    let temp_link:Array<String> = []
+    let temp_keywords:Array<String> = []
+
+    for (let i = 0; i < response.length; i++) {
+      temp_link.push(response[i]['url']);
+      temp_keywords.push(response[i]['found'])
+    }
+
+
+    return{
+      myKeywords:temp_keywords,
+      myLinks:temp_link
+    }
+
+  }
   const getAuthGuild = () => {
-    console.log("https://authorsguild.org/news/?sort=date-DESC")
+     setShowPopup(true)
   }
 
   const getPublisher = async () => {
+    setLoading(true)
     const response = await  axios.get('http://localhost:5000/publisher')
+     setShowPopup(true)
 
-    console.log(response)
+    let keyword_dict =parseResponse(response.data)
+    setLoading(false)
+    setKeywords(keyword_dict.myKeywords)
+    setLinks(keyword_dict.myLinks)
+    console.log(response.data)
+
   }
 
   const getGuardian = async () => {
@@ -22,14 +56,34 @@ export default function Home() {
     console.log(response)
   }
 
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.leftContainer}>
           <LinkBorder link='https://authorsguild.org/news/?sort=date-DESC' logo='test' onClick={getAuthGuild}>
             </LinkBorder> 
+            {showPopup && <div className={styles.popup}>This is a test popup </div>}
           <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/index.html' logo='test' onClick={getPublisher}>
           </LinkBorder>
+          {showPopup && (
+          <div className={styles.popup}>
+            {keywords.map((keyword, index) => (
+              <div key={index} className={styles.linkKeywords}>
+                <br></br>
+                <span style={{fontWeight: 'bold', color:'black'}}>Keywords:</span> <span style={{color:'black'}}>{keyword + ' '} </span> <br></br>
+                <span style={{fontWeight: 'bold', color:'black'}}>Link: </span> <a style={{color:'blue'}} href={links[index].toString()}>{links[index]}</a>
+              </div>
+            ))}
+          <button className={styles.closeButton} onClick={closePopUp}>Close</button>
+          </div>
+          
+        )}
+          {Loading && (
+          <div className={styles.loadingDiv}>
+          <img src="/assets/Dual-Ring-removebg.png" className={styles.loadingIcon} alt="Loading" />
+        </div>
+        )}
           <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/financial-reporting/index.html' logo='test' onClick={getPublisher}>  
           </LinkBorder>
           <LinkBorder link='https://www.theguardian.com/books' logo='test' onClick={getGuardian}>  
