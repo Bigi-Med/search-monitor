@@ -1,7 +1,4 @@
 import React, { FunctionComponent } from 'react'
-import { useState } from 'react'
-import styles from './LinkBorder.module.css'
-import Popup from 'reactjs-popup'
 
 interface LinkBorderProps {
     link?: string;
@@ -11,15 +8,17 @@ interface LinkBorderProps {
 }
 
 const LinkBorder: FunctionComponent<LinkBorderProps> = ({link, logo, children,onClick}) => {
-    const [showPopup, setShowPopup] = useState(false);
 
     return (
         <div style={{
                 border: '1px solid black',
-                background: 'white',
+                borderRadius:'20px',
+                boxShadow:'0 0 10px rgba(0, 0, 0, 0.3)',
+                background: '#0056b3',
                 marginBottom:'10%',
+                cursor: 'pointer',
                 padding: '30px',
-                color:'blue'
+                color:'white'
         }} onClick={onClick}>
             <a href={link}>{link}</a>
             {children}

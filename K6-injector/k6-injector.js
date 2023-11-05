@@ -8,7 +8,7 @@ export let options = {
 
 export default function () {
   // Replace 'http://example.com' with the actual server URL you want to request.
-  let response = http.get('http://192.168.1.20:5000');
+  let response = http.get('http://localhost:5000');
 
   if (response.status === 200) {
     console.log('Request sent successfully');
@@ -17,5 +17,5 @@ export default function () {
   }
 
   // Sleep for 24 hours
-  sleep(2*60*60);  // Sleep for 24 hours in seconds
+  sleep(24*60*60);  // Sleep for 24 hours in seconds
 }

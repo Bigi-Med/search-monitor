@@ -22,6 +22,11 @@ export default function Home() {
     let temp_keywords:Array<String> = []
 
     for (let i = 0; i < response.length; i++) {
+      if(response[i]['url'].split('/')[2]=='consent.google.com')
+      {
+        continue;
+      }
+
       temp_link.push(response[i]['url']);
       temp_keywords.push(response[i]['found'])
     }
@@ -46,14 +51,31 @@ export default function Home() {
     setLoading(false)
     setKeywords(keyword_dict.myKeywords)
     setLinks(keyword_dict.myLinks)
-    console.log(response.data)
-
   }
 
   const getGuardian = async () => {
+    setLoading(true)
     const response = await  axios.get('http://localhost:5000/guardian')
+    setShowPopup(true)
 
-    console.log(response)
+    let keyword_dict = parseResponse(response.data)
+    setLoading(false)
+    setKeywords(keyword_dict.myKeywords)
+    setLinks(keyword_dict.myLinks)
+  }
+
+  const getGoogle = async (link:string) => {
+    setLoading(true)
+    
+    const response = await axios.get(`http://localhost:5000/google?url=${encodeURIComponent(link)}`);
+
+    
+    setShowPopup(true)
+
+    let keyword_dict = parseResponse(response.data)
+    setLoading(false)
+    setKeywords(keyword_dict.myKeywords)
+    setLinks(keyword_dict.myLinks)
   }
 
 
@@ -61,9 +83,8 @@ export default function Home() {
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.leftContainer}>
-          <LinkBorder link='https://authorsguild.org/news/?sort=date-DESC' logo='test' onClick={getAuthGuild}>
-            </LinkBorder> 
-            {showPopup && <div className={styles.popup}>This is a test popup </div>}
+          {/* <LinkBorder link='https://authorsguild.org/news/?sort=date-DESC' logo='test' onClick={getAuthGuild}>
+            </LinkBorder>  */}
           <LinkBorder link='https://www.publishersweekly.com/pw/by-topic/industry-news/index.html' logo='test' onClick={getPublisher}>
           </LinkBorder>
           {showPopup && (
@@ -88,22 +109,22 @@ export default function Home() {
           </LinkBorder>
           <LinkBorder link='https://www.theguardian.com/books' logo='test' onClick={getGuardian}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=kindle direct publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=kindle direct publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=kindle direct publishing&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
         
         </div>
         <div className={styles.rightContainer}>
-          <LinkBorder link='https://news.google.com/search?q=self publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=self publishing&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=self publishing&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=ai book lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=ai book lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=ai book lawsuit&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=ai writing lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=ai writing lawsuit&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=ai writing lawsuit&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=ai created book&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>  
+          <LinkBorder link='https://news.google.com/search?q=ai created book&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=ai created book&hl=en-US&gl=US&ceid=US%3Aen')}>  
           </LinkBorder>
-          <LinkBorder link='https://news.google.com/search?q=author&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={getAuthGuild}>
+          <LinkBorder link='https://news.google.com/search?q=author&hl=en-US&gl=US&ceid=US%3Aen' logo='test' onClick={() => getGoogle('https://news.google.com/search?q=author&hl=en-US&gl=US&ceid=US%3Aen')}>
           </LinkBorder>
 
         

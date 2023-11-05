@@ -8,15 +8,21 @@ import requests
 class ConsentHandlingSpider(scrapy.Spider):
     keywords_to_search = ['amazon', 'kdp', 'kindle direct publishing', 'books', 'author', 'midjouney', 'chatgpt']
     name = 'SearchGoogle'
+
     
-    # start_urls = ['https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dself%2Bpublishing%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en%26allowcookies%3DACCEPTEER%2BALLE%2BCOOKIES&gl=FR&hl=en-US&cm=2&pc=n&src=1'] 
-    start_urls = ['https://news.google.com/search?q=amazon+kdp&hl=en-US&gl=US&ceid=US:en&allowcookies=ACCEPTEER+ALLE+COOKIES']
+    
+    # start_urls = ['https://news.google.com/search?q=amazon+kdp&hl=en-US&gl=US&ceid=US:en&allowcookies=ACCEPTEER+ALLE+COOKIES']
     base_url = 'https://news.google.com/'
+
+    def start_requests(self):
+        url = getattr(self,'url',None)
+        yield scrapy.Request(url,callback=self.parse)
 
 
 
 
     def parse(self, response):
+
 
         articles = response.css('c-wiz.FffXzd')
         myArticle = articles.css('.xrnccd')
@@ -52,6 +58,8 @@ class ConsentHandlingSpider(scrapy.Spider):
     def parse_forward(self,response,title):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')  # Run Chrome in headless mode
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
 
         driver = webdriver.Chrome(options=chrome_options)
         driver.get(response.url)
@@ -73,8 +81,8 @@ class ConsentHandlingSpider(scrapy.Spider):
 
         if found_keywords:
             yield {
-                'url':response.url,
-                'keywords':found_keywords
+                'found':found_keywords,
+                'url':response.url
             }
 
 

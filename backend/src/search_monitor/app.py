@@ -1,7 +1,8 @@
 # importing libraries 
-from flask import Flask 
+from flask import Flask, request
 from flask_mail import Mail, Message 
 import subprocess
+import logging
 import os
 import json
 from flask_cors import CORS  # Import CORS from flask_cors
@@ -20,6 +21,16 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app) 
 
 scrapy_project_path = os.path.join(os.path.dirname(__file__))
+
+google_dict={
+    'https://news.google.com/search?q=amazon kdp&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Damazon%2Bkdp%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=kindle direct publishing&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dkindle%2Bdirect%2Bpublishing%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=self publishing&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dself%2Bpublishing%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=ai book lawsuit&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dai%2Bbook%2Blawsuit%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=ai writing lawsuit&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dai%2Bwriting%2Blawsuit%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=ai created book&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dai%2Bcreated%2Bbook%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+    'https://news.google.com/search?q=author&hl=en-US&gl=US&ceid=US%3Aen':'https://consent.google.com/ml?continue=https://news.google.com/search?q%3Dauthor%26hl%3Den-US%26gl%3DUS%26ceid%3DUS:en&gl=FR&hl=en-US&cm=2&pc=n&src=1',
+}
 
 # message object mapped to a particular URL ‘/’ 
 @app.route("/") 
@@ -51,7 +62,7 @@ def index():
     msg = Message( 
                 'Change summary', 
                 sender ='medbigi2000@gmail.com', 
-                recipients = ['medbigi2000@gmail.com'] 
+                recipients = ['davidvanclip@outlook.com'] 
                 ) 
     
 
@@ -67,7 +78,9 @@ def index():
 def publisher():
     spider_name="SearchPbw"
     output_file_path = os.path.join(scrapy_project_path, 'resultPbw.json')
-    subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultPbw.json"], stderr=subprocess.STDOUT)
+    output = subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultPbw.json"], stderr=subprocess.STDOUT)
+
+    app.logger.debug(output)
 
     with open(output_file_path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
@@ -84,6 +97,19 @@ def guardian():
         data = json.load(json_file)
     
     return data
+
+@app.route('/google')
+def google():
+    spider_name="SearchGoogle"
+    output_file_path = os.path.join(scrapy_project_path, 'resultGoogle.json')
+    params = request.args.get('url')
+    url_to_scrape = google_dict[params]
+    subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultGoogle.json",'-a','url='+url_to_scrape], stderr=subprocess.STDOUT)
+    with open(output_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+    
+    return data
+
 
 
 if __name__ == '__main__': 
