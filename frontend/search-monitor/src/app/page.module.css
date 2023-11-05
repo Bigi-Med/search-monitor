@@ -7,18 +7,43 @@
   min-height: 100vh;
 }
 
+.pageTitle{
+  margin-bottom:2%
+}
+
 .container {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* Adjust the width as needed */
+  width: 80%; /* Adjust the width as needed */
 }
 
 .leftContainer{
   float: left;
 }
 
-.rightContainer{
+.emailInput{
+  width: 100%;
+  padding: 10px;
+  margin-bottom:2%;
+}
+
+.closeEmail{
   float: right;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #0056b3;
+  padding:5px;
+}
+
+.sendEmail{
+  background-color: #0056b3;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  padding:5px;
 }
 
 .popup {
@@ -32,7 +57,7 @@
   transform: translate(-50%, -50%); /* Center both horizontally and vertically */
   max-height: 90vh; /* Set a maximum height to limit the scrollable area */
   overflow: auto; /* Apply overflow: auto to the entire popup */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow for depth */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
   backdrop-filter: blur(50px); /* Apply backdrop filter for background blur */
   border: 1px solid rgba(0, 0, 0, 0.2); /* Add a border for separation */
 }
@@ -59,6 +84,24 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow for depth */
   backdrop-filter: blur(50px); /* Apply backdrop filter for background blur */
   border: 1px solid rgba(0, 0, 0, 0.2); /* Add a border for separation */
+}
+
+.closeButton{
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 16px;
+  margin-left: 45%;
+  cursor: pointer;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  margin-left:75%;
 }
 
 .loadingIcon {

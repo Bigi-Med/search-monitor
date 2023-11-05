@@ -27,9 +27,9 @@ class ConsentHandlingSpider(scrapy.Spider):
         articles = response.css('c-wiz.FffXzd')
         myArticle = articles.css('.xrnccd')
         title = myArticle.css('h3')
-        myTitles = title.css('a::text').getall()[:40]
+        myTitles = title.css('a::text').getall()[:60]
         link = myArticle.css('a::attr(href)').getall()
-        final_links_temp = link[:40]
+        final_links_temp = link[:60]
         final_links_temp_dup = final_links_temp[::2]
         final_links = [row[2:] for row in final_links_temp_dup]
 
@@ -37,7 +37,7 @@ class ConsentHandlingSpider(scrapy.Spider):
 
 
         for element in keywords_dict:
-            yield scrapy.Request(self.base_url + element, callback=self.parse_forward, cb_kwargs={'title':keywords_dict[element]})
+            yield scrapy.Request(self.base_url + element, callback=self.parse_article, cb_kwargs={'title':keywords_dict[element]})
 
 
     def search_for_keywords(self,title, paragraphs, keywords):
@@ -55,20 +55,20 @@ class ConsentHandlingSpider(scrapy.Spider):
         return found_keywords
     
 
-    def parse_forward(self,response,title):
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')  # Run Chrome in headless mode
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
+    # def parse_forward(self,response,title):
+    #     chrome_options = webdriver.ChromeOptions()
+    #     chrome_options.add_argument('--headless')  # Run Chrome in headless mode
+    #     chrome_options.add_argument('--no-sandbox')
+    #     chrome_options.add_argument('--disable-dev-shm-usage')
 
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.get(response.url)
+    #     driver = webdriver.Chrome(options=chrome_options)
+    #     driver.get(response.url)
 
-        final_url = driver.current_url
+    #     final_url = driver.current_url
 
-        driver.quit()
+    #     driver.quit()
 
-        yield scrapy.Request(final_url, callback=self.parse_article, cb_kwargs={'title':title})
+    #     yield scrapy.Request(final_url, callback=self.parse_article, cb_kwargs={'title':title})
 
     
     def parse_article(self,response,title):

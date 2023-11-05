@@ -17,5 +17,5 @@ export default function () {
   }
 
   // Sleep for 24 hours
-  sleep(24*60*60);  // Sleep for 24 hours in seconds
+  sleep(60);  // Sleep for 24 hours in seconds
 }

@@ -33,8 +33,15 @@ google_dict={
 }
 
 # message object mapped to a particular URL ‘/’ 
+def get_recipients_from_file(file_path):
+    with open(file_path, 'r') as file:
+        recipients = file.read().splitlines()
+    return recipients
+
+
 @app.route("/") 
 def index():
+    recepientsList=get_recipients_from_file('email.txt')
     output_file_path = os.path.join(scrapy_project_path, 'changes.json')
     changed=[]
     changed_urls=""
@@ -62,7 +69,7 @@ def index():
     msg = Message( 
                 'Change summary', 
                 sender ='medbigi2000@gmail.com', 
-                recipients = ['davidvanclip@outlook.com'] 
+                recipients = recepientsList
                 ) 
     
 
@@ -73,6 +80,14 @@ def index():
     mail.send(msg)
 
     return 'sent'
+
+
+@app.route('/email')
+def setEmail():
+    new_email = request.args.get('new')
+    with open('email.txt', 'a') as file:
+        file.write(new_email + '\n')
+    return 'added'
 
 @app.route('/publisher')
 def publisher():
@@ -103,7 +118,8 @@ def google():
     spider_name="SearchGoogle"
     output_file_path = os.path.join(scrapy_project_path, 'resultGoogle.json')
     params = request.args.get('url')
-    url_to_scrape = google_dict[params]
+    # url_to_scrape = google_dict[params]
+    url_to_scrape = params
     subprocess.check_output(['scrapy', 'crawl', spider_name, "-O", "resultGoogle.json",'-a','url='+url_to_scrape], stderr=subprocess.STDOUT)
     with open(output_file_path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
